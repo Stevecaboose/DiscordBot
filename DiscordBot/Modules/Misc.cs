@@ -18,6 +18,18 @@ namespace DiscordBot.Modules
 {
     public class Misc : ModuleBase<SocketCommandContext>
     {
+        //display all of the commands
+        [Command("help")]
+        public async Task Help()
+        {
+            var embed = new EmbedBuilder();
+            embed.WithTitle("List of commands");
+            embed.WithDescription(PrintHelp());
+            embed.WithColor(0, 0, 255);
+
+            await Context.Channel.SendMessageAsync("", false, embed.Build());
+        }
+
 
         //add xp to admin accounts (used for testing)
         [Command("addxp")]
@@ -119,7 +131,7 @@ namespace DiscordBot.Modules
 
             ulong roleID = result.FirstOrDefault();
 
-            if (roleID == 0) //this doesnt mean the user doesnt have the role, it means we didnt find that role (aka error)
+            if (roleID == 0) //this doesn't mean the user doesn't have the role, it means we didn't find that role (aka error)
             {
                 Console.WriteLine(roleID.ToString() + "(role error)");
                 return false;
@@ -145,6 +157,18 @@ namespace DiscordBot.Modules
         {
             var account = UserAccountList.GetAccount(Context.User);
             await Context.Channel.SendMessageAsync($"You have {account.XP} XP and {account.Points} points.");
+        }
+
+        private string PrintHelp()
+        {
+            const string message = "echo <message> Echos the same message\n" +
+                                   "pick <choice1>|<choice2>|... Randomly selects one of the choices separated by a |\n" +
+                                   "george See how George is doing\n" +
+                                   "secret See what the secret message is\n" +
+                                   "data check data\n" +
+                                   "stats check your own XP and Points";
+
+            return message;
         }
     }
 }

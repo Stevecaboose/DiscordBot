@@ -24,7 +24,7 @@ namespace DiscordBot
         {
 
             string name = Environment.UserName;
-            string botName = "TestBot";
+            string botName = "George";
 
             string message = Utilities.GetFormattedAlert("WELCOME_&NAME_&BOTNAME", name, botName);
             
@@ -32,7 +32,7 @@ namespace DiscordBot
 
 
             //if the token is empty, do nothing
-            if (Config.bot.token == "" || Config.bot.token == null) return;
+            if (string.IsNullOrEmpty(Config.bot.token)) return;
             _client = new DiscordSocketClient(new DiscordSocketConfig
             {
                 LogLevel = Discord.LogSeverity.Verbose
