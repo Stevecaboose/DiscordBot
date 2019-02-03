@@ -4,11 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DiscordBot.Core.UserAccounts;
 using Newtonsoft.Json;
-using TestDiscordBot.Core.UserAccounts;
 
 
-namespace TestDiscordBot.Core
+namespace DiscordBot.Core
 {
     public static class UserDataStorage
     {

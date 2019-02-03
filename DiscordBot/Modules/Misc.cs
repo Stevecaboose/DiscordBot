@@ -7,17 +7,29 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Discord.WebSocket;
-using TestDiscordBot.Core.UserAccounts;
+using DiscordBot.Core.UserAccounts;
 
 /**
  * Class that holds misc commands
  * Attributes hold the command
  */
 
-namespace TestDiscordBot.Modules
+namespace DiscordBot.Modules
 {
     public class Misc : ModuleBase<SocketCommandContext>
     {
+
+        //add xp to admin accounts (used for testing)
+        [Command("addxp")]
+        [RequireUserPermission(GuildPermission.Administrator)] //must be admin to execute command
+        public async Task AddXP(uint xp)
+        {
+            var account = UserAccountList.GetAccount(Context.User);
+            account.XP += xp;
+            UserAccountList.SaveAccounts();
+            await Context.Channel.SendMessageAsync($"You gained {xp} xp.");
+        }
+
         //echo command
         [Command("echo")]
         public async Task Echo([Remainder] string message)

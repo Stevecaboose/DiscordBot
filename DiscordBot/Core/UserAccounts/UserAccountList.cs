@@ -5,8 +5,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Discord.WebSocket;
+using DiscordBot.Core.UserAccounts;
 
-namespace TestDiscordBot.Core.UserAccounts
+namespace DiscordBot.Core.UserAccounts
 {
     class UserAccountList
     {

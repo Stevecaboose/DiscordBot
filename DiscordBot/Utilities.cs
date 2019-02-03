@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
 
-namespace TestDiscordBot
+namespace DiscordBot
 {
     class Utilities
     {

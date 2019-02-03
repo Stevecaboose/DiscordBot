@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Discord.API;
 
-namespace TestDiscordBot
+namespace DiscordBot
 {
     class Program
     {
