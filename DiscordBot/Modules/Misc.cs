@@ -49,12 +49,12 @@ namespace DiscordBot.Modules
         //add xp to admin accounts (used for testing)
         [Command("addxp")]
         [RequireUserPermission(GuildPermission.Administrator)] //must be admin to execute command
-        public async Task AddXP(uint xp)
+        public async Task AddXP(IGuildUser user, uint xp)
         {
-            var account = UserAccountList.GetAccount(Context.User);
+            var account = UserAccountList.GetAccount(user as SocketUser);
             account.XP += xp;
             UserAccountList.SaveAccounts();
-            await Context.Channel.SendMessageAsync($"You gained {xp} xp.");
+            await Context.Channel.SendMessageAsync($"{user.Username} gained {xp} xp.");
         }
 
         //echo command
@@ -168,10 +168,10 @@ namespace DiscordBot.Modules
         }
 
         [Command("stats")]
-        public async Task Stats()
+        public async Task Stats(IGuildUser user)
         {
-            var account = UserAccountList.GetAccount(Context.User);
-            await Context.Channel.SendMessageAsync($"You have {account.XP} XP and {account.Points} points.");
+            var account = UserAccountList.GetAccount(user as SocketUser);
+            await Context.Channel.SendMessageAsync($"{user.Username} has {account.XP} XP and {account.Points} points.");
         }
 
 
@@ -184,7 +184,7 @@ namespace DiscordBot.Modules
                                    "george See how George is doing\n" +
                                    "secret See what the secret message is\n" +
                                    "data check data\n" +
-                                   "stats check your own XP and Points\n" +
+                                   "stats <@username> check XP and Points for a particular user\n" +
                                    "helpAdmin Displays the help menu for admins";
 
             return message;
@@ -192,7 +192,7 @@ namespace DiscordBot.Modules
 
         private string PrintAdminHelp()
         {
-            const string message = "addxp <integer> adds an amount of xp to the calling user.";
+            const string message = "addxp <@username> <<integer amount> adds an amount of xp to the selected user.";
 
             return message;
         }
