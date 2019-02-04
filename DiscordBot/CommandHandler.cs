@@ -36,7 +36,7 @@ namespace DiscordBot
             {
                 var result = await _service.ExecuteAsync(context, argPos, services);
 
-                //if the results is not sucessful and is not an unknown command, print the reason why we got the error
+                //if the results is not successful and is not an unknown command, print the reason why we got the error
                 if(!result.IsSuccess && result.Error != CommandError.UnknownCommand)
                 {
                     Console.WriteLine(result.ErrorReason);

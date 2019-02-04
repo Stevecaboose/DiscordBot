@@ -30,7 +30,22 @@ namespace DiscordBot.Modules
             await Context.Channel.SendMessageAsync("", false, embed.Build());
         }
 
+        //display all of the commands for admins
+        [Command("helpAdmin")]
+        [RequireUserPermission(GuildPermission.Administrator)]
+        public async Task HelpAdmin()
+        {
+            var embed = new EmbedBuilder();
+            embed.WithTitle("List of admin commands");
+            embed.WithDescription(PrintAdminHelp());
+            embed.WithColor(20, 30, 140);
 
+            await Context.Channel.SendMessageAsync("", false, embed.Build());
+        }
+
+
+
+        
         //add xp to admin accounts (used for testing)
         [Command("addxp")]
         [RequireUserPermission(GuildPermission.Administrator)] //must be admin to execute command
@@ -69,7 +84,7 @@ namespace DiscordBot.Modules
         }
 
         //pick command
-        // randomly selects an option in message. Each option must be seperated by a | character
+        // randomly selects an option in message. Each option must be separated by a | character
         [Command("pick")]
         public async Task PickOne([Remainder] string message)
         {
@@ -159,6 +174,9 @@ namespace DiscordBot.Modules
             await Context.Channel.SendMessageAsync($"You have {account.XP} XP and {account.Points} points.");
         }
 
+
+
+
         private string PrintHelp()
         {
             const string message = "echo <message> Echos the same message\n" +
@@ -166,7 +184,15 @@ namespace DiscordBot.Modules
                                    "george See how George is doing\n" +
                                    "secret See what the secret message is\n" +
                                    "data check data\n" +
-                                   "stats check your own XP and Points";
+                                   "stats check your own XP and Points\n" +
+                                   "helpAdmin Displays the help menu for admins";
+
+            return message;
+        }
+
+        private string PrintAdminHelp()
+        {
+            const string message = "addxp <integer> adds an amount of xp to the calling user.";
 
             return message;
         }
