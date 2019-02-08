@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Discord.WebSocket;
 using DiscordBot.Core.UserAccounts;
+using System.Net;
+using Newtonsoft.Json;
+using System.Globalization;
 
 /**
  * Class that holds misc commands
@@ -18,6 +21,51 @@ namespace DiscordBot.Modules
 {
     public class Misc : ModuleBase<SocketCommandContext>
     {
+
+        //person command
+        [Command("person")]
+        public async Task GetRandomPerson()
+        {
+            string json = "";
+
+            
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+
+            using (WebClient client = new WebClient())
+            {
+                json = client.DownloadString("https://randomuser.me/api/");
+            }
+
+            var dataObject = JsonConvert.DeserializeObject<dynamic>(json); //contains the definitions. The json from the api call
+
+            //get gender
+            string gender = dataObject.results[0].gender.ToString();
+            gender = textInfo.ToTitleCase(gender);
+
+            //get first name
+            string firstName = dataObject.results[0].name.first.ToString();
+            firstName = textInfo.ToTitleCase(firstName);
+
+            //get last name
+            string lastName = dataObject.results[0].name.last.ToString();
+            lastName = textInfo.ToTitleCase(lastName);
+
+            //get avatar url
+            string avatarUrl = dataObject.results[0].picture.large.ToString();
+
+            var embed = new EmbedBuilder();
+            embed.WithThumbnailUrl(avatarUrl);
+            embed.WithTitle("Generated Person");
+            embed.AddField("First Name", firstName);
+            embed.AddField("Last Name", lastName);
+            embed.AddField("Gender", gender);
+
+            
+            
+
+            await Context.Channel.SendMessageAsync("", false, embed.Build() );
+        }
+
         //display all of the commands
         [Command("help")]
         public async Task Help()
@@ -35,17 +83,17 @@ namespace DiscordBot.Modules
         [RequireUserPermission(GuildPermission.Administrator)]
         public async Task HelpAdmin()
         {
+            var dmChannel = await Context.User.GetOrCreateDMChannelAsync();
             var embed = new EmbedBuilder();
             embed.WithTitle("List of admin commands");
             embed.WithDescription(PrintAdminHelp());
             embed.WithColor(20, 30, 140);
-
-            await Context.Channel.SendMessageAsync("", false, embed.Build());
+            await dmChannel.SendMessageAsync("", false, embed.Build());
         }
 
 
 
-        
+
         //add xp to admin accounts (used for testing)
         [Command("addxp")]
         [RequireUserPermission(GuildPermission.Administrator)] //must be admin to execute command
@@ -179,20 +227,21 @@ namespace DiscordBot.Modules
 
         private string PrintHelp()
         {
-            const string message = "echo <message> Echos the same message\n" +
-                                   "pick <choice1>|<choice2>|... Randomly selects one of the choices separated by a |\n" +
-                                   "george See how George is doing\n" +
-                                   "secret See what the secret message is\n" +
-                                   "data check data\n" +
-                                   "stats <@username> check XP and Points for a particular user\n" +
-                                   "helpAdmin Displays the help menu for admins";
+            const string message = "echo <message> -Echos the same message\n" +
+                                   "pick <choice1>|<choice2>|... -Randomly selects one of the choices separated by a |\n" +
+                                   "george -See how George is doing\n" +
+                                   "secret -See what the secret message is\n" +
+                                   "data -check data\n" +
+                                   "stats <@username> -check XP and Points for a particular user\n" +
+                                   "person -Generates a random person\n" +
+                                   "helpAdmin -Displays the help menu for admins";
 
             return message;
         }
 
         private string PrintAdminHelp()
         {
-            const string message = "addxp <@username> <<integer amount> adds an amount of xp to the selected user.";
+            const string message = "addxp <@username> <integer amount> -adds an amount of xp to the selected user.";
 
             return message;
         }
