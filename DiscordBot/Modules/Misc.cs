@@ -11,6 +11,7 @@ using DiscordBot.Core.UserAccounts;
 using System.Net;
 using Newtonsoft.Json;
 using System.Globalization;
+using Discord.Rest;
 
 /**
  * Class that holds misc commands
@@ -21,6 +22,14 @@ namespace DiscordBot.Modules
 {
     public class Misc : ModuleBase<SocketCommandContext>
     {
+
+
+        [Command("react")]
+        public async Task HandleReactionMessage()
+        {
+            RestUserMessage msg = await Context.Channel.SendMessageAsync("React to me!");
+            Global.MessageIDToTrack = msg.Id;
+        }
 
         //person command
         [Command("person")]
@@ -234,6 +243,7 @@ namespace DiscordBot.Modules
                                    "data -check data\n" +
                                    "stats <@username> -check XP and Points for a particular user\n" +
                                    "person -Generates a random person\n" +
+                                   "react -The bot waits to be reacted to" +
                                    "helpAdmin -Displays the help menu for admins";
 
             return message;

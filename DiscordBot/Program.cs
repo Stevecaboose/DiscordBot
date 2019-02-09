@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Discord.API;
+using DiscordBot.Core;
 
 namespace DiscordBot
 {
@@ -41,6 +42,8 @@ namespace DiscordBot
             //subscribe to a logevent
             _client.Log += Log;
             _handler = new CommandHandler();
+            _client.Ready += RepeatingTimer.StartTimer;
+            _client.ReactionAdded += OnReactionAdded;
 
             //login the client
             await _client.LoginAsync(Discord.TokenType.Bot, Config.bot.token);
@@ -48,11 +51,25 @@ namespace DiscordBot
             //start the client
             await _client.StartAsync();
 
+            Global.client = _client;
+
             _handler = new CommandHandler();
             await _handler.InitalizeAsync(_client);
 
             //await till the operation ends
             await Task.Delay(-1);
+        }
+
+        private async Task OnReactionAdded(Discord.Cacheable<Discord.IUserMessage, ulong> cache, ISocketMessageChannel channel, SocketReaction reaction)
+        {
+            if (reaction.MessageId == Global.MessageIDToTrack)
+            {
+                if (reaction.Emote.Name == "👌")
+                {
+                    await channel.SendMessageAsync(reaction.User.Value.Username + " says OK.");
+                }
+            }
+     
         }
 
         private async Task Log(Discord.LogMessage msg)
