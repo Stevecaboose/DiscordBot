@@ -16,11 +16,11 @@ namespace DiscordBot.Core.LevelingSystem
         {
             //if the user has a timeout, ignore them
 
-            var userAccount = UserAccounts.UserAccounts.GetAccount(user);
+            var userAccount = UserAccounts.UserAccountList.GetAccount(user);
 
             uint oldLevel = userAccount.LevelNumber;
             userAccount.XP += 50;
-            UserAccounts.UserAccounts.SaveAccounts();
+            UserAccounts.UserAccountList.SaveAccounts();
             uint newLevel = userAccount.LevelNumber;
 
             if (oldLevel != newLevel)

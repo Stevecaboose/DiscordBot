@@ -12,7 +12,7 @@ namespace DiscordBot.Core
 {
     public static class UserDataStorage
     {
-        //save all UserAccounts
+        //save all UserAccountList
         public static void SaveUserAccounts(IEnumerable<UserAccount> accounts, string filePath)
         {
             string json = JsonConvert.SerializeObject(accounts, Formatting.Indented);

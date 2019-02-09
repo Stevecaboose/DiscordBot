@@ -9,14 +9,19 @@ using DiscordBot.Core.UserAccounts;
 
 namespace DiscordBot.Core.UserAccounts
 {
-    class UserAccounts
+    class UserAccountList
     {
 
         private static List<UserAccount> accountList;
 
+        public static List<UserAccount> getList()
+        {
+            return accountList;
+        }
+
         private static string accountsFile = "Resources/accounts.json";
 
-        static UserAccounts()
+        static UserAccountList()
         {
             //check if the accountsFile exists
             if (UserDataStorage.SaveExists(accountsFile))
@@ -68,6 +73,16 @@ namespace DiscordBot.Core.UserAccounts
             accountList.Add(newAccount);
             SaveAccounts();
             return newAccount;
+        }
+
+        public static bool ResetXP()
+        {
+            foreach (var account in accountList)
+            {
+                account.XP = 0;
+            }
+
+            return true; //it made it through the loop with no issues
         }
     }
 }

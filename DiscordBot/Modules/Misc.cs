@@ -114,10 +114,21 @@ namespace DiscordBot.Modules
         [RequireUserPermission(GuildPermission.Administrator)] //must be admin to execute command
         public async Task AddXP(IGuildUser user, uint xp)
         {
-            var account = UserAccounts.GetAccount(user as SocketUser);
+            var account = UserAccountList.GetAccount(user as SocketUser);
             account.XP += xp;
-            UserAccounts.SaveAccounts();
+            UserAccountList.SaveAccounts();
             await Context.Channel.SendMessageAsync($"{user.Username} gained {xp} xp.");
+        }
+
+        //reset all xp (purge xp)
+        [Command("resetxp")]
+        [RequireUserPermission(GuildPermission.Administrator)] // must be admin
+        public async Task ResetXP()
+        {
+            UserAccountList.ResetXP();
+            UserAccountList.SaveAccounts();
+
+            await Context.Channel.SendMessageAsync("All XP has been set to 0");
         }
 
         //echo command
@@ -233,7 +244,7 @@ namespace DiscordBot.Modules
         [Command("stats")]
         public async Task Stats(IGuildUser user)
         {
-            var account = UserAccounts.GetAccount(user as SocketUser);
+            var account = UserAccountList.GetAccount(user as SocketUser);
 
             var embed = new EmbedBuilder();
             embed.WithTitle("Stats");
