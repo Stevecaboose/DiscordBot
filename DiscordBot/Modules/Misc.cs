@@ -234,7 +234,15 @@ namespace DiscordBot.Modules
         public async Task Stats(IGuildUser user)
         {
             var account = UserAccounts.GetAccount(user as SocketUser);
-            await Context.Channel.SendMessageAsync($"{user.Username} has {account.XP} XP and {account.Points} points.");
+
+            var embed = new EmbedBuilder();
+            embed.WithTitle("Stats");
+            embed.WithDescription(user.Username);
+            embed.AddField("XP", account.XP);
+            embed.AddField("Level", account.LevelNumber);
+
+
+            await Context.Channel.SendMessageAsync("", false, embed.Build());
         }
 
 
