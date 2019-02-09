@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using System.Runtime.Remoting.Contexts;
+using DiscordBot.Core.LevelingSystem;
 
 namespace DiscordBot
 {
@@ -30,6 +32,12 @@ namespace DiscordBot
             var msg = s as SocketUserMessage;
             if (msg == null) return;
             var context = new SocketCommandContext(_client, msg);
+
+            //leveling up logic
+            if (context.User.IsBot) return;
+
+            Leveling.UserSentMessage((SocketGuildUser)context.User, (SocketTextChannel)context.Channel);
+
             int argPos = 0;
             if(msg.HasStringPrefix(Config.bot.cmdPrefix, ref argPos) 
                 || msg.HasMentionPrefix(_client.CurrentUser, ref argPos))

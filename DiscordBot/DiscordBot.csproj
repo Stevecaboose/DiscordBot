@@ -143,6 +143,7 @@
   <ItemGroup>
     <Compile Include="CommandHandler.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Core\LevelingSystem\Leveling.cs" />
     <Compile Include="Core\RepeatingTimer.cs" />
     <Compile Include="Core\UserDataStorage.cs" />
     <Compile Include="Core\UserAccounts\UserAccount.cs" />

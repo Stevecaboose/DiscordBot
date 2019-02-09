@@ -9,14 +9,14 @@ using DiscordBot.Core.UserAccounts;
 
 namespace DiscordBot.Core.UserAccounts
 {
-    class UserAccountList
+    class UserAccounts
     {
 
         private static List<UserAccount> accountList;
 
         private static string accountsFile = "Resources/accounts.json";
 
-        static UserAccountList()
+        static UserAccounts()
         {
             //check if the accountsFile exists
             if (UserDataStorage.SaveExists(accountsFile))

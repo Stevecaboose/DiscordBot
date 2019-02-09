@@ -23,6 +23,12 @@ namespace DiscordBot.Modules
     public class Misc : ModuleBase<SocketCommandContext>
     {
 
+        [Command("WhatLevelIs")]
+        public async Task WhatLevelIs(uint xp)
+        {
+            uint level = (uint)Math.Sqrt(xp / 50);
+            await Context.Channel.SendMessageAsync("The level is " + level);
+        }
 
         [Command("react")]
         public async Task HandleReactionMessage()
@@ -108,9 +114,9 @@ namespace DiscordBot.Modules
         [RequireUserPermission(GuildPermission.Administrator)] //must be admin to execute command
         public async Task AddXP(IGuildUser user, uint xp)
         {
-            var account = UserAccountList.GetAccount(user as SocketUser);
+            var account = UserAccounts.GetAccount(user as SocketUser);
             account.XP += xp;
-            UserAccountList.SaveAccounts();
+            UserAccounts.SaveAccounts();
             await Context.Channel.SendMessageAsync($"{user.Username} gained {xp} xp.");
         }
 
@@ -227,7 +233,7 @@ namespace DiscordBot.Modules
         [Command("stats")]
         public async Task Stats(IGuildUser user)
         {
-            var account = UserAccountList.GetAccount(user as SocketUser);
+            var account = UserAccounts.GetAccount(user as SocketUser);
             await Context.Channel.SendMessageAsync($"{user.Username} has {account.XP} XP and {account.Points} points.");
         }
 
