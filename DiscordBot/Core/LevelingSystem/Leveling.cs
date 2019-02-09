@@ -31,7 +31,18 @@ namespace DiscordBot.Core.LevelingSystem
 
 
             xpGainTimer.Elapsed += (sender, e)  => XpGainTimer_Elapsed(sender, e, user);
-            
+
+            if (!userAccount.TimeOutFromXPGain)
+            {
+                userAccount.XP += 50;
+                userAccount.TimeOutFromXPGain = true;
+            }
+            else
+            {
+                //do nothing
+            }
+
+
             UserAccounts.UserAccountList.SaveAccounts();
             uint newLevel = userAccount.LevelNumber;
 
@@ -53,10 +64,12 @@ namespace DiscordBot.Core.LevelingSystem
         private static void XpGainTimer_Elapsed(object sender, ElapsedEventArgs e, SocketGuildUser user)
         {
             var userAccount = UserAccounts.UserAccountList.GetAccount(user);
-            if (!userAccount.TimeOutFromXPGain)
+
+            //if the user has a timeout, reset it because the timer is up
+            if (userAccount.TimeOutFromXPGain)
             {
-                userAccount.XP += 50;
-                userAccount.TimeOutFromXPGain = true;
+                
+                userAccount.TimeOutFromXPGain = false;
             }
             
         }
