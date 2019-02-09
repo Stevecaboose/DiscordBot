@@ -276,7 +276,8 @@ namespace DiscordBot.Modules
 
         private string PrintAdminHelp()
         {
-            const string message = "addxp <@username> <integer amount> -adds an amount of xp to the selected user.";
+            const string message = "addxp <@username> <integer amount> -adds an amount of xp to the selected user.\n" +
+                                   "resetxp -Sets all user's xp down to 0";
 
             return message;
         }

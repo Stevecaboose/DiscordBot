@@ -10,6 +10,8 @@ namespace DiscordBot.Core.UserAccounts
 
         public uint XP { get; set; }
 
+        public bool TimeOutFromXPGain { get; set; }
+
         public uint LevelNumber
         {
             get

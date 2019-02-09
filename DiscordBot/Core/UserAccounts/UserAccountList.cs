@@ -14,7 +14,7 @@ namespace DiscordBot.Core.UserAccounts
 
         private static List<UserAccount> accountList;
 
-        public static List<UserAccount> getList()
+        public static List<UserAccount> GetList()
         {
             return accountList;
         }
@@ -67,7 +67,8 @@ namespace DiscordBot.Core.UserAccounts
             {
                 ID = id,
                 Points = 0,
-                XP = 0
+                XP = 0,
+                TimeOutFromXPGain = false
             };
 
             accountList.Add(newAccount);

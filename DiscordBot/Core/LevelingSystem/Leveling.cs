@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Timers;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
@@ -19,7 +20,18 @@ namespace DiscordBot.Core.LevelingSystem
             var userAccount = UserAccounts.UserAccountList.GetAccount(user);
 
             uint oldLevel = userAccount.LevelNumber;
-            userAccount.XP += 50;
+
+            var xpGainTimer = new Timer()
+            {
+                Interval = 300000,
+                Enabled = true,
+                AutoReset = true
+            };
+
+
+
+            xpGainTimer.Elapsed += (sender, e)  => XpGainTimer_Elapsed(sender, e, user);
+            
             UserAccounts.UserAccountList.SaveAccounts();
             uint newLevel = userAccount.LevelNumber;
 
@@ -35,6 +47,18 @@ namespace DiscordBot.Core.LevelingSystem
 
                 await channel.SendMessageAsync("", false, embed.Build());
             }
+        }
+
+        //if we are inside the time limit, add the xp 
+        private static void XpGainTimer_Elapsed(object sender, ElapsedEventArgs e, SocketGuildUser user)
+        {
+            var userAccount = UserAccounts.UserAccountList.GetAccount(user);
+            if (!userAccount.TimeOutFromXPGain)
+            {
+                userAccount.XP += 50;
+                userAccount.TimeOutFromXPGain = true;
+            }
+            
         }
     }
 }
