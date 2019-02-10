@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
@@ -13,6 +14,7 @@ namespace DiscordBot.Core
 
         private static Timer loopingTimer;
         private static SocketTextChannel channel;
+        private static int count = 0;
 
         internal static Task StartTimer()
         {
@@ -20,9 +22,9 @@ namespace DiscordBot.Core
             channel = Global.client.GetGuild(Config.bot.guildID).GetTextChannel(Config.bot.textChannel);
             loopingTimer = new Timer()
             {
-                 Interval = 5000,
+                 Interval = 60000,
                  AutoReset = true,
-                 Enabled = true
+                 Enabled = false //switch this if you decide to use the timer
             };
 
             loopingTimer.Elapsed += OnTimerTicked;
@@ -34,8 +36,8 @@ namespace DiscordBot.Core
         private static async void OnTimerTicked(object sender, ElapsedEventArgs e)
         {
 
+            
 
-           // await channel.SendMessageAsync("Ping!");
         }
     }
 }

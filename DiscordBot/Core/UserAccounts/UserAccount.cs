@@ -12,6 +12,8 @@ namespace DiscordBot.Core.UserAccounts
 
         public bool TimeOutFromXPGain { get; set; }
 
+        public DateTime LastMessageTimestamp { get; set; }
+
         public uint LevelNumber
         {
             get

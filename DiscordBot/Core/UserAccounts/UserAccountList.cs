@@ -27,6 +27,12 @@ namespace DiscordBot.Core.UserAccounts
             if (UserDataStorage.SaveExists(accountsFile))
             {
                 accountList = UserDataStorage.LoadUserAccounts(accountsFile).ToList();
+
+                //reset xp gain timers
+                foreach (var account in accountList)
+                {
+                    account.TimeOutFromXPGain = false;
+                }
             }
             else //we dont have a save file
             {
@@ -68,7 +74,8 @@ namespace DiscordBot.Core.UserAccounts
                 ID = id,
                 Points = 0,
                 XP = 0,
-                TimeOutFromXPGain = false
+                TimeOutFromXPGain = false,
+                LastMessageTimestamp = DateTime.Now
             };
 
             accountList.Add(newAccount);

@@ -42,6 +42,8 @@ namespace DiscordBot
             public string cmdPrefix;
             public ulong guildID;
             public ulong textChannel;
+            public uint XPGain;
+            public uint levelMessageTimeout;
         }
     }
 }
