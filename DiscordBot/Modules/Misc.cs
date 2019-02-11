@@ -23,6 +23,22 @@ namespace DiscordBot.Modules
     public class Misc : ModuleBase<SocketCommandContext>
     {
 
+        [Command("kick")]
+        [RequireUserPermission(GuildPermission.KickMembers)]
+        [RequireBotPermission(GuildPermission.KickMembers)]
+        public async Task KickUser(IGuildUser user, [Remainder] string reason = "No reason provided.")
+        {
+            await user.KickAsync(reason);
+        }
+
+        [Command("ban")]
+        [RequireUserPermission(GuildPermission.BanMembers)]
+        [RequireBotPermission(GuildPermission.BanMembers)]
+        public async Task BanUser(IGuildUser user, int days, [Remainder] string reason = "No reason provided.")
+        {
+            await user.BanAsync(days, reason);
+        }
+
         [Command("WhatLevelIs")]
         public async Task WhatLevelIs(uint xp)
         {
@@ -268,7 +284,7 @@ namespace DiscordBot.Modules
                                    "data -check data\n" +
                                    "stats <@username> -check XP and Points for a particular user\n" +
                                    "person -Generates a random person\n" +
-                                   "react -The bot waits to be reacted to" +
+                                   "react -The bot waits to be reacted to\n" +
                                    "helpAdmin -Displays the help menu for admins";
 
             return message;
@@ -277,7 +293,9 @@ namespace DiscordBot.Modules
         private string PrintAdminHelp()
         {
             const string message = "addxp <@username> <integer amount> -adds an amount of xp to the selected user.\n" +
-                                   "resetxp -Sets all user's xp down to 0";
+                                   "resetxp -Sets all user's xp down to 0\n" +
+                                   "kick <@username> <reason> -Kicks the user\n" +
+                                   "ban <@username> <banned for how many days> <reason> -Bans the user";
 
             return message;
         }
