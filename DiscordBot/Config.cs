@@ -44,6 +44,8 @@ namespace DiscordBot
             public ulong textChannel;
             public uint XPGain;
             public uint levelMessageTimeout;
+            public int pruneDaysForTooManyWarnings;
+            public int warningsBeforeBan;
         }
     }
 }

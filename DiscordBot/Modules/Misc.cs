@@ -18,10 +18,46 @@ using Discord.Rest;
  * Attributes hold the command
  */
 
+
+
 namespace DiscordBot.Modules
 {
+
+
+
     public class Misc : ModuleBase<SocketCommandContext>
     {
+
+        [Command("warn")]
+        [RequireUserPermission(GuildPermission.Administrator)]
+        [RequireBotPermission(GuildPermission.BanMembers)]
+        public async Task WarnUser(IGuildUser user)
+        {
+            var userAccout = UserAccountList.GetAccount((SocketUser) user);
+            userAccout.NumberOfWarnings++; //adding a warning
+            UserAccountList.SaveAccounts();//save 
+
+            //check how many warnings they have
+            if (userAccout.NumberOfWarnings >= Config.bot.warningsBeforeBan) //if you have more than this, then ban them
+            {
+                await user.Guild.AddBanAsync(user, Config.bot.pruneDaysForTooManyWarnings, "Too many warnings");
+            }else if (userAccout.NumberOfWarnings == Config.bot.warningsBeforeBan - 1)
+            {
+                var embed = new EmbedBuilder();
+                embed.WithTitle("Careful");
+                embed.WithDescription("One more warning and you're outta here");
+
+                await Context.Channel.SendMessageAsync("", false, embed.Build());
+;
+            }else if (userAccout.NumberOfWarnings == 1)
+            {
+                var embed = new EmbedBuilder();
+                embed.WithTitle("Warning");
+                embed.WithDescription("This is your first warning");
+
+                await Context.Channel.SendMessageAsync("", false, embed.Build());
+            }
+        }
 
         [Command("kick")]
         [RequireUserPermission(GuildPermission.KickMembers)]
@@ -34,9 +70,9 @@ namespace DiscordBot.Modules
         [Command("ban")]
         [RequireUserPermission(GuildPermission.BanMembers)]
         [RequireBotPermission(GuildPermission.BanMembers)]
-        public async Task BanUser(IGuildUser user, int days, [Remainder] string reason = "No reason provided.")
+        public async Task BanUser(IGuildUser user, int pruneDays, [Remainder] string reason = "No reason provided.")
         {
-            await user.BanAsync(days, reason);
+            await user.BanAsync(pruneDays, reason); // pruneDays is how many days of messages to delete
         }
 
         [Command("WhatLevelIs")]
@@ -295,7 +331,8 @@ namespace DiscordBot.Modules
             const string message = "addxp <@username> <integer amount> -adds an amount of xp to the selected user.\n" +
                                    "resetxp -Sets all user's xp down to 0\n" +
                                    "kick <@username> <reason> -Kicks the user\n" +
-                                   "ban <@username> <banned for how many days> <reason> -Bans the user";
+                                   "ban <@username> <how many days of messages to remove> <reason> -Bans the user\n" +
+                                   "warn <@username> give the user a warning";
 
             return message;
         }
