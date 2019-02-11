@@ -2,6 +2,10 @@
 A bot for the Discord client written in C# with various features
 
 # Requirements
+- Visual Studio 2017
+
+- .NET Framework 4.6.1
+
 - Discord.Net NuGet package by Discord.Net Contributors including RogueException
 
 - Newtonsoft.Json NuGet package by James Newton-King
@@ -13,13 +17,14 @@ After compilation and the first execution, you must edit the bin\Debug\Resources
 
 ```
 {
-  "token": "DISCORD TOKEN",
-  "cmdPrefix": "CHARACTER USED TO DENOTE A COMMAND",
-  "guildID": GUILD ID (ID FOR SERVER),
-  "textChannel": TEXT CHANNNEL ID (ID FOR SPECIFIC CHANNEL),
-  "XPGain": HOW MUCH XP IS GAINED PER MESSAGE SENT
-  "levelMessageTimeout": HOW MANY MINUTES BEFORE A USER CAN GAIN XP AFTER SENDING A MESSAGE
-
+  "token": <STRING>DISCORD TOKEN, 
+  "cmdPrefix": <STRING>CHARACTER USED TO DENOTE A COMMAND,
+  "guildID": <INTEGER>GUILD ID (ID FOR SERVER),
+  "textChannel": <INTEGER>TEXT CHANNNEL ID (ID FOR SPECIFIC CHANNEL),
+  "XPGain": <INTEGER>HOW MUCH XP IS GAINED PER MESSAGE SENT
+  "levelMessageTimeout": <INTEGER>HOW MANY MINUTES BEFORE A USER CAN GAIN XP AFTER SENDING A MESSAGE
+  "pruneDaysForTooManyWarnings": <INTEGER>HOW MANY DAYS OF MESSAGES ARE REMOVED AFTER A BAN DUE TO WARNINGS,
+  "warningsBeforeBan": <INTEGER>INCLUSIVE NUMBER OF WARNINGS BEFORE AN AUTOMATIC BAN 
 }
 ```
 
