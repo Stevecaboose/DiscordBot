@@ -22,5 +22,9 @@ namespace DiscordBot.Core.UserAccounts
                 return (uint) Math.Sqrt(XP / 50); // get level from xp points
             }
         }
+
+        public bool IsMuted { get; set; }
+
+        public uint NumberOfWarnings { get; set; }
     }
 }

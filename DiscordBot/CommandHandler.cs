@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 using System.Runtime.Remoting.Contexts;
 using DiscordBot.Core.LevelingSystem;
+using DiscordBot.Core.UserAccounts;
 
 namespace DiscordBot
 {
@@ -32,9 +33,18 @@ namespace DiscordBot
             var msg = s as SocketUserMessage;
             if (msg == null) return;
             var context = new SocketCommandContext(_client, msg);
+            if (context.User.IsBot) return;
+
+            // mute check
+            var userAccount = UserAccountList.GetAccount(context.User);
+            if (userAccount.IsMuted)
+            {
+                await context.Message.DeleteAsync();
+                return;
+            }
 
             //leveling up logic
-            if (context.User.IsBot) return;
+
 
             Leveling.UserSentMessage((SocketGuildUser)context.User, (SocketTextChannel)context.Channel);
 
